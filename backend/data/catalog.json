@@ -1,0 +1,204 @@
+{
+  "merchant": {
+    "id": "merchant_001",
+    "name": "Northwind Gadgets",
+    "description": "Electronics and accessories store"
+  },
+  "products": [
+    {
+      "id": "prod_001",
+      "@type": "Product",
+      "name": "Wireless Noise-Cancelling Headphones",
+      "description": "Over-ear headphones with active noise cancellation, 30-hour battery life, and Bluetooth 5.3.",
+      "category": "Audio",
+      "price_inr": 4999,
+      "currency": "INR",
+      "stock": 42,
+      "attributes": {
+        "color": ["Black", "Silver", "Blue"],
+        "battery_life_hours": 30,
+        "wireless": true
+      },
+      "tags": ["headphones", "audio", "wireless", "travel"]
+    },
+    {
+      "id": "prod_002",
+      "@type": "Product",
+      "name": "USB-C Fast Charger 65W",
+      "description": "Compact 65W GaN charger, supports fast charging for laptops and phones.",
+      "category": "Chargers",
+      "price_inr": 1499,
+      "currency": "INR",
+      "stock": 120,
+      "attributes": {
+        "wattage": 65,
+        "ports": 2
+      },
+      "tags": ["charger", "usb-c", "fast-charging", "travel"]
+    },
+    {
+      "id": "prod_003",
+      "@type": "Product",
+      "name": "Mechanical Keyboard - Compact 75%",
+      "description": "Hot-swappable mechanical keyboard with RGB backlighting and compact 75% layout.",
+      "category": "Peripherals",
+      "price_inr": 5999,
+      "currency": "INR",
+      "stock": 18,
+      "attributes": {
+        "switch_type": "Brown",
+        "backlight": "RGB",
+        "wireless": false
+      },
+      "tags": ["keyboard", "mechanical", "gaming", "productivity"]
+    },
+    {
+      "id": "prod_004",
+      "@type": "Product",
+      "name": "Portable SSD 1TB",
+      "description": "USB 3.2 portable SSD, up to 1050MB/s read speed, shock-resistant casing.",
+      "category": "Storage",
+      "price_inr": 7499,
+      "currency": "INR",
+      "stock": 30,
+      "attributes": {
+        "capacity_gb": 1000,
+        "interface": "USB 3.2"
+      },
+      "tags": ["storage", "ssd", "portable", "backup"]
+    },
+    {
+      "id": "prod_005",
+      "@type": "Product",
+      "name": "Webcam 1080p with Ring Light",
+      "description": "1080p webcam with built-in adjustable ring light, ideal for calls and streaming.",
+      "category": "Video",
+      "price_inr": 2299,
+      "currency": "INR",
+      "stock": 55,
+      "attributes": {
+        "resolution": "1080p",
+        "ring_light": true
+      },
+      "tags": ["webcam", "streaming", "video-call", "wfh"]
+    },
+    {
+      "id": "prod_006",
+      "@type": "Product",
+      "name": "27-inch QHD Monitor",
+      "description": "27-inch 2560x1440 IPS monitor, 100Hz refresh rate, USB-C with 65W power delivery.",
+      "category": "Displays",
+      "price_inr": 18999,
+      "currency": "INR",
+      "stock": 14,
+      "attributes": {
+        "size_inches": 27,
+        "resolution": "QHD",
+        "refresh_rate_hz": 100
+      },
+      "tags": ["monitor", "display", "qhd", "wfh", "productivity"]
+    },
+    {
+      "id": "prod_007",
+      "@type": "Product",
+      "name": "Wireless Mouse - Ergonomic",
+      "description": "Ergonomic wireless mouse with silent clicks and 6-month battery life.",
+      "category": "Peripherals",
+      "price_inr": 1299,
+      "currency": "INR",
+      "stock": 80,
+      "attributes": {
+        "wireless": true,
+        "dpi": 1600,
+        "silent_click": true
+      },
+      "tags": ["mouse", "wireless", "ergonomic", "productivity"]
+    },
+    {
+      "id": "prod_008",
+      "@type": "Product",
+      "name": "Aluminum Laptop Stand",
+      "description": "Adjustable aluminum laptop stand, foldable and portable, improves posture and airflow.",
+      "category": "Accessories",
+      "price_inr": 1799,
+      "currency": "INR",
+      "stock": 60,
+      "attributes": {
+        "material": "aluminum",
+        "foldable": true,
+        "adjustable_height": true
+      },
+      "tags": ["laptop-stand", "ergonomic", "travel", "wfh"]
+    },
+    {
+      "id": "prod_009",
+      "@type": "Product",
+      "name": "Portable Bluetooth Speaker",
+      "description": "Compact waterproof Bluetooth speaker with 12-hour battery life and deep bass.",
+      "category": "Audio",
+      "price_inr": 2999,
+      "currency": "INR",
+      "stock": 45,
+      "attributes": {
+        "wireless": true,
+        "battery_life_hours": 12,
+        "waterproof": true
+      },
+      "tags": ["speaker", "audio", "wireless", "travel", "waterproof"]
+    },
+    {
+      "id": "prod_010",
+      "@type": "Product",
+      "name": "20000mAh Power Bank",
+      "description": "High-capacity 20000mAh power bank with 22.5W fast charging, dual USB-A and USB-C output.",
+      "category": "Chargers",
+      "price_inr": 2199,
+      "currency": "INR",
+      "stock": 90,
+      "attributes": {
+        "capacity_mah": 20000,
+        "fast_charging": true
+      },
+      "tags": ["power-bank", "charger", "travel", "fast-charging"]
+    },
+    {
+      "id": "prod_011",
+      "@type": "Product",
+      "name": "Shockproof Phone Case",
+      "description": "Military-grade shockproof phone case with raised bezel for screen protection.",
+      "category": "Accessories",
+      "price_inr": 799,
+      "currency": "INR",
+      "stock": 150,
+      "attributes": {
+        "shockproof": true,
+        "raised_bezel": true
+      },
+      "tags": ["phone-case", "protection", "accessories"]
+    },
+    {
+      "id": "prod_012",
+      "@type": "Product",
+      "name": "Fitness Smartwatch",
+      "description": "Smartwatch with heart rate tracking, SpO2 monitor, 7-day battery life, and sleep tracking.",
+      "category": "Wearables",
+      "price_inr": 3499,
+      "currency": "INR",
+      "stock": 35,
+      "attributes": {
+        "battery_life_days": 7,
+        "heart_rate_monitor": true,
+        "water_resistant": true
+      },
+      "tags": ["smartwatch", "wearable", "fitness", "health"]
+    }
+  ],
+  "bundles": [
+    {
+      "id": "bundle_wfh_001",
+      "name": "Work From Home Starter Bundle",
+      "product_ids": ["prod_005", "prod_002"],
+      "discount_pct": 10
+    }
+  ]
+}

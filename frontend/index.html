@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Northwind Gadgets — Shopping Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0F1424;
+    --panel: #171E36;
+    --panel-raised: #1D254A;
+    --border: #2A3358;
+    --accent: #5EEAD4;
+    --accent-dim: #2C5F58;
+    --amber: #F5A623;
+    --text: #EDF1FA;
+    --text-muted: #8892B0;
+    --user-bubble: #263165;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(94, 234, 212, 0.06), transparent 40%),
+      radial-gradient(circle at 85% 100%, rgba(94, 234, 212, 0.04), transparent 40%);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 4px 8px;
+  }
+
+  .mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, var(--accent), #3BAFA0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #08211D;
+    flex-shrink: 0;
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  .brand-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  .brand-sub {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .signal {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(94, 234, 212, 0.6);
+  }
+
+  .signal.thinking {
+    animation: pulse 1.4s ease-out infinite;
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(94, 234, 212, 0.55); }
+    70%  { box-shadow: 0 0 0 7px rgba(94, 234, 212, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(94, 234, 212, 0); }
+  }
+
+  #chat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    height: 460px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  #chat::-webkit-scrollbar { width: 6px; }
+  #chat::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .empty-state {
+    margin: auto;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    max-width: 280px;
+    line-height: 1.5;
+  }
+
+  .row {
+    display: flex;
+    gap: 10px;
+    max-width: 88%;
+  }
+
+  .row.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+
+  .avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .row.agent .avatar {
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  .row.user .avatar {
+    background: var(--user-bubble);
+    color: var(--text-muted);
+  }
+
+  .bubble {
+    padding: 10px 14px;
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+
+  .row.agent .bubble {
+    background: var(--panel-raised);
+    border-radius: 3px 12px 12px 12px;
+    color: var(--text);
+  }
+
+  .row.user .bubble {
+    background: var(--user-bubble);
+    border-radius: 12px 3px 12px 12px;
+    color: var(--text);
+  }
+
+  .input-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  #msgInput {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 13px 16px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  #msgInput::placeholder { color: var(--text-muted); }
+  #msgInput:focus { border-color: var(--accent); }
+
+  #sendBtn {
+    background: var(--accent);
+    color: #08211D;
+    border: none;
+    padding: 0 20px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: filter 0.15s ease;
+  }
+
+  #sendBtn:hover { filter: brightness(1.08); }
+  #sendBtn:focus-visible, #msgInput:focus-visible, #checkoutBtn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  #cartBar {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .cart-label {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+  }
+
+  #cartContents {
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  #cartContents.empty { color: var(--text-muted); }
+
+  .cart-total {
+    color: var(--amber);
+    font-weight: 600;
+  }
+
+  #checkoutBtn {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13.5px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  #checkoutBtn:hover:not(:disabled) { background: rgba(94, 234, 212, 0.08); }
+  #checkoutBtn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 480px) {
+    #chat { height: 400px; }
+    #cartBar { flex-direction: column; align-items: stretch; }
+    #checkoutBtn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="mark">N</div>
+    <div class="brand">
+      <div class="brand-name">Northwind Gadgets</div>
+      <div class="brand-sub"><span class="signal" id="signal"></span>Shopping assistant</div>
+    </div>
+  </header>
+
+  <div id="chat">
+    <div class="empty-state" id="emptyState">
+      Ask about a product, a budget, or what you need it for —<br>the assistant will find a match from our catalog.
+    </div>
+  </div>
+
+  <div class="input-row">
+    <input id="msgInput" placeholder="I need headphones for travel under 5000" autocomplete="off" />
+    <button id="sendBtn" onclick="send()">Send</button>
+  </div>
+
+  <div id="cartBar">
+    <div>
+      <div class="cart-label">Cart</div>
+      <div id="cartContents" class="empty">Nothing yet</div>
+    </div>
+    <button id="checkoutBtn" onclick="checkout()" disabled>Checkout</button>
+  </div>
+
+</div>
+
+<script>
+const API_BASE = "http://localhost:8000";
+let sessionId = null;
+
+const chat = document.getElementById("chat");
+let emptyState = document.getElementById("emptyState");
+const signal = document.getElementById("signal");
+const checkoutBtn = document.getElementById("checkoutBtn");
+
+function appendRow(text, who) {
+  if (emptyState) { emptyState.remove(); emptyState = null; }
+  const row = document.createElement("div");
+  row.className = "row " + who;
+
+  const avatar = document.createElement("div");
+  avatar.className = "avatar";
+  avatar.textContent = who === "user" ? "Me" : "N";
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.textContent = text;
+
+  row.appendChild(avatar);
+  row.appendChild(bubble);
+  chat.appendChild(row);
+  chat.scrollTop = chat.scrollHeight;
+  return bubble;
+}
+
+async function send() {
+  const input = document.getElementById("msgInput");
+  const message = input.value.trim();
+  if (!message) return;
+  appendRow(message, "user");
+  input.value = "";
+  signal.classList.add("thinking");
+
+  try {
+    const res = await fetch(`${API_BASE}/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: sessionId, message }),
+    });
+    const data = await res.json();
+    sessionId = data.session_id;
+    appendRow(data.reply, "agent");
+    updateCart(data.cart);
+  } catch (err) {
+    appendRow("Couldn't reach the assistant. Is the backend running on localhost:8000?", "agent");
+  } finally {
+    signal.classList.remove("thinking");
+  }
+}
+
+function updateCart(cart) {
+  const el = document.getElementById("cartContents");
+  if (!cart || cart.length === 0) {
+    el.textContent = "Nothing yet";
+    el.classList.add("empty");
+    checkoutBtn.disabled = true;
+    return;
+  }
+  el.classList.remove("empty");
+  const total = cart.reduce((sum, i) => sum + i.price_inr * i.qty, 0);
+  const items = cart.map(i => `${i.name} ×${i.qty}`).join(", ");
+  el.innerHTML = `${items} — <span class="cart-total">₹${total.toLocaleString('en-IN')}</span>`;
+  checkoutBtn.disabled = false;
+}
+
+async function checkout() {
+  if (!sessionId) return;
+  checkoutBtn.disabled = true;
+  try {
+    const res = await fetch(`${API_BASE}/checkout`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: sessionId }),
+    });
+    const data = await res.json();
+    if (data.detail) {
+      appendRow(data.detail, "agent");
+      checkoutBtn.disabled = false;
+      return;
+    }
+    appendRow(`Order placed — ${data.order.id}. Total ₹${data.amount_inr.toLocaleString('en-IN')}, completed in ${data.time_to_purchase_sec}s.`, "agent");
+  } catch (err) {
+    appendRow("Checkout failed. Check that the backend is running.", "agent");
+    checkoutBtn.disabled = false;
+  }
+}
+
+document.getElementById("msgInput").addEventListener("keydown", e => {
+  if (e.key === "Enter") send();
+});
+</script>
+</body>
+</html>
