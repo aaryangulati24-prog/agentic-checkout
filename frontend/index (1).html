@@ -6,6 +6,7 @@
 <title>Northwind Gadgets — Shopping Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <style>
   :root {
     --bg: #0F1424;
@@ -383,23 +384,67 @@ function updateCart(cart) {
 async function checkout() {
   if (!sessionId) return;
   checkoutBtn.disabled = true;
+
+  let data;
   try {
     const res = await fetch(`${API_BASE}/checkout`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ session_id: sessionId }),
     });
-    const data = await res.json();
+    data = await res.json();
     if (data.detail) {
       appendRow(data.detail, "agent");
       checkoutBtn.disabled = false;
       return;
     }
-    appendRow(`Order placed — ${data.order.id}. Total ₹${data.amount_inr.toLocaleString('en-IN')}, completed in ${data.time_to_purchase_sec}s.`, "agent");
   } catch (err) {
     appendRow("Checkout failed. Check that the backend is running.", "agent");
     checkoutBtn.disabled = false;
+    return;
   }
+
+  // Open Razorpay's test-mode payment popup
+  const options = {
+    key: data.razorpay_key_id,
+    amount: data.order.amount,
+    currency: data.order.currency,
+    name: "Northwind Gadgets",
+    description: "Order via Agentic Checkout",
+    order_id: data.order.id,
+    handler: async function (response) {
+      // Verify the payment signature server-side before confirming
+      try {
+        const verifyRes = await fetch(`${API_BASE}/verify-payment`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: sessionId,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+          }),
+        });
+        const verifyData = await verifyRes.json();
+        if (verifyData.status === "verified") {
+          appendRow(`Payment verified — ${verifyData.payment_id}. Completed in ${verifyData.time_to_purchase_sec}s.`, "agent");
+        } else {
+          appendRow("Payment could not be verified.", "agent");
+        }
+      } catch (err) {
+        appendRow("Payment succeeded but verification failed to reach the server.", "agent");
+      }
+    },
+    modal: {
+      ondismiss: function () {
+        checkoutBtn.disabled = false;
+      },
+    },
+    theme: { color: "#5EEAD4" },
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
 }
 
 document.getElementById("msgInput").addEventListener("keydown", e => {
