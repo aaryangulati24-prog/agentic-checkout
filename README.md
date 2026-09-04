@@ -70,10 +70,4 @@ server) to chat with the agent.
    (see `bundles` in catalog.json).
 5. Pitch video + architecture diagram for submission.
 
-## Submission checklist (Razorpay Buildathon)
 
-- [ ] Public GitHub repo (push this)
-- [ ] Working demo (backend running + frontend chat flow)
-- [ ] 5-minute pitch video (problem → approach → demo → results → next steps)
-- [ ] Architecture doc/diagram
-- [ ] Measurable impact numbers (conversion rate, time-to-purchase, fallback rate)
