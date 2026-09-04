@@ -59,15 +59,5 @@ server) to chat with the agent.
 - `fallback_rate` → % of turns where the agent couldn't produce a grounded answer
 - Per-session `time_to_purchase_sec` returned at checkout
 
-## Roadmap / stretch goals
-
-1. **AI-to-AI handshake (stretch):** add a second "buyer agent" that
-   negotiates with this merchant agent programmatically (no human in the
-   loop), following an ACP/AP2/x402-style request-offer-accept pattern.
-2. Real Razorpay test-mode integration (order creation + payment capture webhook).
-3. Persist sessions/cart in a real DB instead of in-memory dict.
-4. Add upsell logic: when cart is built, agent proactively suggests a bundle
-   (see `bundles` in catalog.json).
-5. Pitch video + architecture diagram for submission.
 
 
